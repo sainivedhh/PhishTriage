@@ -1,0 +1,209 @@
+- id: AUTH-001
+  title: SPF Failure Detected
+  severity: high
+  score: 25
+  mitre_attack_id: T1566.002
+  description: SPF authentication failed or was softfailed for the sender domain.
+  condition:
+    field: header_auth.spf
+    in: ["fail", "softfail"]
+
+- id: AUTH-002
+  title: DMARC Authentication Failure
+  severity: critical
+  score: 35
+  mitre_attack_id: T1566.002
+  description: DMARC policy check failed for the sender domain.
+  condition:
+    field: header_auth.dmarc
+    in: ["fail"]
+
+- id: AUTH-003
+  title: Header Return-Path / From Domain Mismatch
+  severity: medium
+  score: 20
+  mitre_attack_id: T1656
+  description: Sender address domain does not align with envelope Return-Path.
+  condition:
+    field: header_auth.mismatches
+    has_substring: "Return-Path"
+
+- id: AUTH-004
+  title: Suspicious Reply-To Redirection Mismatch
+  severity: high
+  score: 25
+  mitre_attack_id: T1656
+  description: Reply-To header points to an external or divergent domain.
+  condition:
+    field: header_auth.mismatches
+    has_substring: "Reply-To"
+
+- id: AUTH-005
+  title: Suspicious Received-Chain Anomaly
+  severity: medium
+  score: 15
+  mitre_attack_id: T1534
+  description: Received hops contain dynamic IP ranges, broadband hosts, or forged intermediate relays.
+  condition:
+    field: header_auth.received_anomalies
+    min_count: 1
+
+- id: DOM-001
+  title: Punycode / IDN Homoglyph Domain Spoofing
+  severity: critical
+  score: 40
+  mitre_attack_id: T1566.002
+  description: Sender or embedded link utilizes Punycode / confusable Cyrillic/Greek homoglyphs to impersonate a protected brand.
+  condition:
+    field: lookalike_matches
+    match_type_in: ["homoglyph_punycode"]
+
+- id: DOM-002
+  title: Lookalike / Typosquatted Domain Detected
+  severity: high
+  score: 30
+  mitre_attack_id: T1566.002
+  description: Sender or link domain has high Levenshtein or Jaro-Winkler similarity to a protected corporate domain.
+  condition:
+    field: lookalike_matches
+    match_type_in: ["levenshtein", "jaro_winkler", "tld_swap"]
+
+- id: URL-001
+  title: IP-Based URL in Email
+  severity: high
+  score: 25
+  mitre_attack_id: T1566.002
+  description: Email contains hyperlinks using direct IP addresses rather than domain names.
+  condition:
+    field: url_findings
+    indicator_type_in: ["ip_in_url"]
+
+- id: URL-002
+  title: Deceptive Display-Text vs Destination URL Mismatch
+  severity: critical
+  score: 35
+  mitre_attack_id: T1566.002
+  description: Anchor display text shows a trusted URL but navigates to an untrusted external location.
+  condition:
+    field: url_findings
+    indicator_type_in: ["href_text_mismatch"]
+
+- id: URL-003
+  title: URL Shortener Used to Mask Destination
+  severity: medium
+  score: 15
+  mitre_attack_id: T1566.002
+  description: Email contains known URL shortening services concealing destination targets.
+  condition:
+    field: url_findings
+    indicator_type_in: ["url_shortener"]
+
+- id: URL-004
+  title: Suspicious / Disposable TLD in Link
+  severity: medium
+  score: 15
+  mitre_attack_id: T1566.002
+  description: Hyperlink targets high-abuse top-level domains.
+  condition:
+    field: url_findings
+    indicator_type_in: ["suspicious_tld"]
+
+- id: URL-005
+  title: Credential Lure Path in URL
+  severity: high
+  score: 25
+  mitre_attack_id: T1566.002
+  description: URL path or hostname contains credential harvesting triggers (e.g. login, verify, signin).
+  condition:
+    field: url_findings
+    indicator_type_in: ["phishing_lure_path"]
+
+- id: ATT-001
+  title: Known Malicious Hash Signature Match
+  severity: critical
+  score: 50
+  mitre_attack_id: T1566.001
+  description: Attachment SHA-256 matches known malicious threat intelligence blocklist.
+  condition:
+    field: attachment_findings
+    finding_type_in: ["known_malicious_hash"]
+
+- id: ATT-002
+  title: Double Extension Attachment Spoofing
+  severity: critical
+  score: 45
+  mitre_attack_id: T1566.001
+  description: Attachment uses double extensions (e.g. .pdf.exe) to mask executable code.
+  condition:
+    field: attachment_findings
+    finding_type_in: ["double_extension"]
+
+- id: ATT-003
+  title: Macro-Enabled Office Document
+  severity: high
+  score: 30
+  mitre_attack_id: T1566.001
+  description: Attachment is an Office document capable of executing embedded VBA macros.
+  condition:
+    field: attachment_findings
+    finding_type_in: ["macro_capable_document"]
+
+- id: ATT-004
+  title: Nested Archive Evasion Detected
+  severity: high
+  score: 25
+  mitre_attack_id: T1566.001
+  description: Attachment packages an archive within an archive to evade security filters.
+  condition:
+    field: attachment_findings
+    finding_type_in: ["nested_archive"]
+
+- id: ATT-005
+  title: Executable or Script Embedded in Archive
+  severity: critical
+  score: 45
+  mitre_attack_id: T1566.001
+  description: Archive contains executable or script payload (e.g. .exe, .bat, .vbs).
+  condition:
+    field: attachment_findings
+    finding_type_in: ["executable_in_archive"]
+
+- id: BEC-001
+  title: Executive / VIP Impersonation Detected
+  severity: critical
+  score: 40
+  mitre_attack_id: T1656
+  description: Display name matches executive or VIP identity, but sender address is external.
+  condition:
+    field: body_findings
+    finding_type_in: ["executive_impersonation"]
+
+- id: BEC-002
+  title: Wire Transfer / Financial Payment Request
+  severity: high
+  score: 25
+  mitre_attack_id: T1656
+  description: Body requests urgent wire transfers, gift cards, or banking information updates.
+  condition:
+    field: body_findings
+    finding_type_in: ["financial_request"]
+
+- id: BEC-003
+  title: Urgency and Coercion Language
+  severity: medium
+  score: 15
+  mitre_attack_id: T1656
+  description: Body employs high-urgency psychological triggers and deadlines.
+  condition:
+    field: body_findings
+    finding_type_in: ["urgency_language"]
+
+- id: BEC-004
+  title: Credential Harvesting Phishing Lure in Body
+  severity: high
+  score: 25
+  mitre_attack_id: T1566.002
+  description: Body prompts recipient to click and re-enter credentials or reset password.
+  condition:
+    field: body_findings
+    finding_type_in: ["credential_harvesting_lure"]

@@ -1,0 +1,9 @@
+# Known malicious attachment SHA-256 blocklist
+# Comments and empty lines are ignored
+
+# Emotet sample hash
+4a5b6c7d8e9f0123456789abcdef0123456789abcdef0123456789abcdef0123
+# Qakbot sample hash
+b5d4045c3f466fa91fe2cc6abe79232a1a57cdf104f7a26e716e0a1e2789530c
+# AgentTesla sample hash
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
