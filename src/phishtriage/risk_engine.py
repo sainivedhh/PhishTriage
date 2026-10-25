@@ -83,9 +83,8 @@ class RuleEngine:
                 return True
 
         # 3. Minimum count
-        if "min_count" in cond:
-            if isinstance(val, (list, set, tuple)) and len(val) >= cond["min_count"]:
-                return True
+        if "min_count" in cond and isinstance(val, (list, set, tuple)) and len(val) >= cond["min_count"]:
+            return True
 
         # 4. Custom matching for structured sub-objects (lookalike, url, attachment, body findings)
         if "match_type_in" in cond:
@@ -148,5 +147,5 @@ class RiskEngine:
             total_score=total_score,
             verdict=verdict,
             breakdown=findings,
-            mitre_techniques=sorted(list(mitre_set)),
+            mitre_techniques=sorted(mitre_set),
         )
