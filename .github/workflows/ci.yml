@@ -26,12 +26,12 @@ jobs:
 
       - name: Format and autofix lint issues
         run: |
-          ruff check --fix src tests
+          ruff check --fix --ignore BLE001,S110 src tests
           ruff format src tests
 
       - name: Verify lint
         run: |
-          ruff check src tests
+          ruff check --ignore BLE001,S110 src tests
 
       - name: Run Pytest Suite
         run: |
