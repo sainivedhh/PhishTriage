@@ -49,3 +49,16 @@ jobs:
               print(f'CRITICAL: F1 Score {f1} is below quality threshold 0.95')
               sys.exit(1)
           "
+
+
+      - name: Build Python Distribution
+        run: |
+          python -m pip install --upgrade build
+          python -m build
+
+      - name: Upload Distribution Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: phishtriage-dist
+          path: dist/
+          if-no-files-found: error
