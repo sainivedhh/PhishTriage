@@ -1,8 +1,5 @@
 # PhishTriage: Automated Phishing & BEC Detection and Triage Pipeline
 
-PhishTriage is an end-to-end, deterministic security pipeline built in Python 3.11+ for analyzing raw `.eml` emails, scoring phishing/BEC risks, mapping threats to the MITRE ATT&CK matrix, and generating comprehensive incident reports.
-
----
 
 ## Architecture Overview
 
@@ -26,6 +23,26 @@ graph TD
     F --> G[Module 11: Markdown Incident Report & JSON IOC Export]
     G --> H[Module 12: SQLite Persistence & Typer CLI]
 ```
+
+PhishTriage is an end-to-end, deterministic security pipeline built in Python 3.11+ for analyzing raw `.eml` emails, scoring phishing/BEC risks, mapping threats to the MITRE ATT&CK matrix, and generating comprehensive incident reports.
+
+---
+
+---
+
+## Requirement-to-Module Test Coverage
+
+| Requirement | Module | Test |
+|---|---|---|
+| Parse raw email safely | `parser.py` | `test_parser.py` |
+| Check SPF/DKIM/DMARC, spoofing | `header_auth.py` | `test_header_auth.py` |
+| Lookalike domains | `lookalike.py` | `test_lookalike.py` |
+| Bad links | `url_analysis.py` | `test_url_analysis.py` |
+| Bad attachments | `attachment_triage.py` | `test_attachment_triage.py` |
+| BEC language, VIP spoof | `body_heuristics.py` | `test_body_heuristics.py` |
+| Score and verdict | `risk_engine.py` | `test_risk_engine.py` |
+| LLM safe use | `llm_triage.py` | `test_llm_triage.py` |
+| Whole flow | `pipeline.py` | `test_e2e.py` |
 
 ---
 
