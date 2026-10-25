@@ -33,13 +33,13 @@ jobs:
         run: |
           ruff check --ignore BLE001,S110 src tests
 
-      - name: Run Pytest Suite
-        run: |
-          pytest --cov=src/phishtriage tests/
-
       - name: Generate Synthetic Evaluation Dataset
         run: |
           python src/phishtriage/dataset_generator.py
+
+      - name: Run Pytest Suite
+        run: |
+          pytest --cov=src/phishtriage tests/
 
       - name: Run Pipeline Evaluation (Fail CI if F1 < 0.95)
         run: |
